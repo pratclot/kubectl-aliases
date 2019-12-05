@@ -34,6 +34,7 @@ def main():
 
     ops = [
         ('a', 'apply --recursive -f', None, None),
+        ('ed', 'edit', None, None),
         ('ex', 'exec -i -t', None, None),
         ('lo', 'logs -f', None, None),
         ('lop', 'logs -f -p', None, None),
@@ -45,15 +46,17 @@ def main():
         ('run', 'run --rm --restart=Never --image-pull-policy=IfNotPresent -i -t', None, None),
         ]
 
+    common_ops = ['g', 'd', 'rm', 'ed']
+
     res = [
-        ('po', 'pods', ['g', 'd', 'rm'], None),
-        ('dep', 'deployment', ['g', 'd', 'rm'], None),
-        ('svc', 'service', ['g', 'd', 'rm'], None),
-        ('ing', 'ingress', ['g', 'd', 'rm'], None),
-        ('cm', 'configmap', ['g', 'd', 'rm'], None),
-        ('sec', 'secret', ['g', 'd', 'rm'], None),
+        ('po', 'pods', common_ops, None),
+        ('dep', 'deployment', common_ops, None),
+        ('svc', 'service', common_ops, None),
+        ('ing', 'ingress', common_ops, None),
+        ('cm', 'configmap', common_ops, None),
+        ('sec', 'secret', common_ops, None),
         ('no', 'nodes', ['g', 'd'], ['sys']),
-        ('ns', 'namespaces', ['g', 'd', 'rm'], ['sys']),
+        ('ns', 'namespaces', common_ops, ['sys']),
         ]
     res_types = [r[0] for r in res]
 
@@ -71,8 +74,8 @@ def main():
 
     # these accept a value, so they need to be at the end and
     # mutually exclusive within each other.
-    positional_args = [('f', '--recursive -f', ['g', 'd', 'rm'], res_types + ['all'
-                       , 'l', 'sys']), ('l', '-l', ['g', 'd', 'rm'], ['f',
+    positional_args = [('f', '--recursive -f', common_ops, res_types + ['all'
+                       , 'l', 'sys']), ('l', '-l', common_ops, ['f',
                        'all']), ('n', '--namespace', ['g', 'd', 'rm',
                        'lo', 'ex', 'pf'], ['ns', 'no', 'sys', 'all'])]
 
